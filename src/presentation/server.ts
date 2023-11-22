@@ -1,3 +1,5 @@
+import { error } from "console";
+import { CheckService } from "../domain/use-cases/checks/check-service";
 import { CronService } from "./cron/cron-service";
 
 export class ServerApp{
@@ -7,7 +9,11 @@ export class ServerApp{
         CronService.createJob(
             '*/3 * * * * *', // cronTime
             ()=> {
-                console.log('You will see this message every second');
+                const url = 'https://google.com';
+                new CheckService(
+                    ()=> console.log(`${url}: ok`),
+                    (error) => console.log(error)
+                ).execute(url);
             }, // onTick
         );
     }
